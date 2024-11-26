@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    
+    <style>
+        /* Sidebar styling */
+        /* Sidebar styling */
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 330px;
+            background-color: #2c3e50;
+            color: white;
+            padding-top: 30px;
+            transition: width 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 1.75rem;
+            padding-bottom: 30px;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed h2 {
+            opacity: 0;
+        }
+
+        .sidebar button {
+            width: 100%;
+            margin-bottom: 12px;
+            /* border-radius: 30px; */
+            font-size: 1.1rem;
+            text-align: left;
+            padding: 12px 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar button:hover {
+            background-color: #34495e;
+        }
+
+        .sidebar.collapsed button {
+            opacity: 0;
+        }
+
+        /* Content wrapper */
+        .content {
+            margin-left: 320px;
+            padding: 30px;
+            transition: margin-left 0.3s ease;
+            background-color: #ecf0f1;
+        }
+
+        .content.collapsed {
+            margin-left: 60px;
+        }
+
+        .toggle-btn {
+            position: absolute;
+            top: 20px;
+            right: -12px;
+            width: 45px;
+            height: 40px;
+            background-color: #2c3e50;
+            border-radius: 50%;
+            color: white;
+            font-size: 23px;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dropdown styling */
+        select.form-control {
+            padding: 5px 15px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            width: 230px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Table styling */
+        .table {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .table thead {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle;
+            text-align: center;
+            padding: 12px;
+        }
+
+        .table td {
+            border-top: 1px solid #ddd;
+        }
+
+        /* Button styling */
+        .btn-add {
+            border-radius: 25px;
+            padding: 10px 30px;
+            font-size: 1.1rem;
+            width: 200px;
+            height: 50px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        /* Logout button styling */
+        .logout-btn {
+            display: block;
+            /* Ensures it is a block-level element */
+            width: 50%;
+            /* Ensure it takes 50% of its container's width */
+            margin-top: 400px;
+            background-color: #e74c3c;
+            color: white;
+            font-size: 1.1rem;
+            /* border-radius: 30px; */
+            padding: 12px 20px;
+            transition: background-color 0.3s ease;
+            border: none;
+            text-align: center;
+            margin-left: auto;
+            /* Center align the button within its container */
+            margin-right: auto;
+            /* Center align the button within its container */
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+            color: white;
+        }
+
+        /* Horizontal layout for form fields */
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+        }
+        .form-group {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .form-group:last-child {
+            margin-right: 0;
+        }
+        .form-group select,
+        .form-group input {
+            width: 100%;
+        }
+        
+        /* Installment table styling */
+        .installment-table {
+            margin-top: 50px;
+        }
+        .installment-btn {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Sidebar styling */
+.sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 330px;
+            background-color: #2c3e50;
+            color: white;
+            padding-top: 30px;
+            transition: width 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+        }
+
+        /* Content wrapper */
+        .content {
+            margin-left: 330px;
+            padding: 30px;
+            transition: margin-left 0.3s ease;
+            background-color: #ecf0f1;
+        }
+
+        .content.collapsed {
+            margin-left: 60px;
+        }
+
+        .toggle-btn {
+    position: fixed; /* Fixed so it doesn't move with the content */
+    top: 20px;
+    left: 285px; /* Adjust based on collapsed sidebar width */
+    width: 45px;
+    height: 40px;
+    background-color: #2c3e50;
+    border-radius: 50%;
+    color: white;
+    font-size: 23px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensures it stays above all other elements */
+    transition: left 0.3s ease;
+}
+
+/* Move the toggle button closer to the sidebar when expanded */
+.sidebar.collapsed + .toggle-btn {
+    left: 10px; /* Adjust based on your collapsed sidebar's width */
+}
+
+        /* Sidebar collapsed state */
+.sidebar.collapsed button {
+    opacity: 1; /* Keep button opacity visible */
+}
+
+/* Hide text (span) when collapsed */
+.sidebar.collapsed span {
+    display: none;
+}
+
+/* Keep icon visible */
+.sidebar.collapsed i {
+    display: inline-block;
+}
+
+.sidebar.collapsed button {
+    opacity: 1; /* Ensures button is visible */
+    background-color: none;
+}
+
+.sidebar.collapsed i {
+    display: inline-block; /* Ensures the icon remains visible */
+}
+
+.sidebar.collapsed .sidebar-text {
+  display: none; /* Hide the text */
+}
+
+.sidebar.collapsed .sidebar-icon {
+  display: inline-block; /* Ensure the icon is always visible */
+}
+
+/* Icon visibility when sidebar is collapsed */
+.sidebar.collapsed .sidebar-icon i {
+  display: inline-block; /* Keep icon visible */
+}
+/* Hide the dropdown arrow */
+.no-arrow {
+        appearance: none; /* Hides default arrow in most modern browsers */
+        -webkit-appearance: none; /* Hides arrow in Safari */
+        -moz-appearance: none; /* Hides arrow in Firefox */
+        background: transparent; /* Optional: Removes any default background styling */
+        padding-right: 1.5rem; /* Adjust for consistent padding */
+    }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Sidebar -->
+        <!-- <div class="sidebar" id="sidebar">
+            <div class="toggle-btn" onclick="toggleSidebar()">&#9664;</div>
+            <h2 id="institute-name">{{ institute_name }}</h2>
+            <button class="btn btn-primary" onclick="navigateTo('/home')">Home</button>
+            <button class="btn btn-primary" onclick="navigateTo('/course')">Course</button>
+            <button class="btn btn logout-btn" onclick="navigateTo('/logout')">Logout</button>
+        </div> -->
+
+        <div class="sidebar" id="sidebar">
+            <!-- <div class="toggle-btn" onclick="toggleSidebar()">&#9664;</div> -->
+            <h2 id="institute-name">{{ institute_name }}</h2>
+        
+            <!-- Home Button with Icon -->
+            <button class="sidebar-item btn-primary" onclick="navigateTo('/home')" >
+                <i class="sidebar-icon"> <i class="fas fa-home"></i> </i> <!-- Icon -->
+                <span class="sidebar-text">Home</span> <!-- Text -->
+              </button>
+
+            <button class="sidebar-item btn-primary" onclick="navigateTo('/course')" >
+            <i class="sidebar-icon"> <i class="fas fa-book course-icon"></i> </i> <!-- Icon -->
+            <span class="sidebar-text">Course</span> <!-- Text -->
+            </button>
+        
+            <!-- Logout Button -->
+            <!-- <button class="btn btn logout-btn" onclick="navigateTo('/logout')">Logout</button> -->
+            <button class="sidebar-item logout-btn" onclick="navigateTo('/logout')">
+                <i class="sidebar-icon"> <i class="fas fa-sign-out-alt"></i>  </i> <!-- Icon -->
+                <span class="sidebar-text">Logout</span> <!-- Text -->
+            </button>
+        </div>
+        <div class="toggle-btn" onclick="toggleSidebar()">&#9664;</div>
+
+        
+        
+        <!-- Main Content Area -->
+        <div class="content" id="content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div 
+                id="flash-message" 
+                class="alert alert-{{ 'danger' if category == 'error' else 'success' }}"
+                style="transition: opacity 0.5s ease-out;"
+            >
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+            <div class="container mt-5">
+                
+                <h2>Student Details</h2>
+                <form action="/update_student/{{ student.id }}" method="POST">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="student-name">Name</label>
+                            <input type="text" class="form-control" id="student-name" name="student_name" value="{{ student.student_name }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="student-phone">Phone</label>
+                            <input type="text" class="form-control" id="student-phone" name="student_contact" value="{{ student.student_contact }}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="student-email">Email</label>
+                            <input type="text" class="form-control" id="student-email" name="student_mail" value="{{ student.student_mail }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="student-address">Address</label>
+                            <input type="text" class="form-control" id="student-address" name="student_address" value="{{ student.student_address }}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="student-course">Course</label>
+                            <!-- Disabled dropdown for display only -->
+                            <select class="form-control no-arrow" id="student-course" name="dummy_course_id" disabled>
+                                {% for item in courses %}
+                                <option value="{{ item.id }}" {% if item.id == student.course_id %}selected{% endif %}>
+                                    {{ item.course_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <!-- Hidden input field to submit the course_id -->
+                            <input type="hidden" name="course_id" value="{{ student.course_id }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="student-total_payable_amnt">Total Payable Amount</label>
+                            <input type="text" class="form-control" id="student-total_payable_amnt" name="total_payable_amnt" value="{{ student.total_payable_amnt }}" readonly>
+                        </div>  
+                    </div>
+                    <div class="form-row">
+                        <!-- Save Changes Button -->
+                        <button type="submit" class="btn btn-success">Save Changes</button>
+                
+                        <!-- Delete Button -->
+                        <a href="/delete_student/{{ student.id }}" class="btn btn-danger ml-2" onclick="return confirm('Are you sure you want to delete this student?')">Delete</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Installment Table -->
+            <div class="installment-table container">
+                <div class="installment-btn">
+                    <form action="{{ url_for('main.add_installments', student_id=student.id) }}" method="POST" id="installmentForm">
+                        <button type="submit" id="addInstallmentBtn" class="btn btn-success">Add Installment</button>
+                    </form>
+                    <form action="{{ url_for('main.delete_installment', student_id=student.id) }}" method="POST" id="installmentForm">
+                        <button type="submit" id="deleteInstallmentBtn" class="btn btn-danger">Delete Installment</button>
+                    </form>
+                    <!-- <button class="btn btn-danger" onclick="deleteInstallment()">Delete Installment</button> -->
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>First Installment</th>
+                            <th>Fees</th>
+                            <th>Due Date</th>
+                            <th>Payment Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- {% for installment in installments %}
+                        <tr data-installment-id="{{ installment.id }}">
+                            <td>Installment {{ loop.index }}</td>
+                            <td>₹{{ installment.amount }}</td>
+                            <td>{{ installment.due_date }}</td>
+                            <td>
+                                <button class="status-btn btn-danger" onclick="markAsPaid(this)">Not Paid</button>
+                            </td>
+                        </tr>
+                        {% endfor %} -->
+
+                        {% for installment in installments %}
+    <tr data-installment-id="{{ installment.id }}">
+        <td>Installment {{ loop.index }}</td>
+        <td>₹{{ installment.amount| round }}</td>
+        <td>{{ installment.due_date }}</td>
+        <td>
+            <!-- <button 
+            onclick="markAsPaid('{{ student.id }}', '{{ installment.id }}', '{{ installment.amount }}')">
+            Mark as Paid
+            </button> -->
+
+            <button 
+            onclick="markAsPaid(
+                '{{ student.id }}', 
+                '{{ installment.id }}', 
+                '{{ installment.amount }}',
+                '{{ student.name }}', 
+                '{{ student.email }}', 
+                '{{ student.course }}'
+            )"
+        id="installment-{{ installment.id }}"
+        class="btn {{ 'btn-success' if installment.status == 'Paid' else 'btn-danger' }}">
+        {{ installment.status if installment.status else 'Not Paid' }}
+    </button>
+    <div id="receipt-container"></div>
+   </td>
+    </tr>
+{% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+        const flashMessage = document.getElementById('flash-message');
+        if (flashMessage) {
+            // Set a timeout to remove the flash message after 3 seconds
+            setTimeout(() => {
+                flashMessage.style.opacity = '0'; // Fade out
+                setTimeout(() => {
+                    flashMessage.remove(); // Remove from DOM
+                }, 500); // Wait for the fade-out transition
+            }, 3000); // Delay of 3 seconds
+        }
+    });
+
+
+
+        //         // Toggle Sidebar
+        //         function toggleSidebar() {
+        //     document.getElementById("sidebar").classList.toggle("collapsed");
+        //     document.getElementById("content").classList.toggle("collapsed");
+        // }
+
+        function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const content = document.getElementById('content');
+    const toggleBtn = document.querySelector('.toggle-btn');
+    
+    // Toggle collapsed class
+    sidebar.classList.toggle('collapsed');
+    content.classList.toggle('collapsed');
+
+    // Adjust toggle button position
+    if (sidebar.classList.contains('collapsed')) {
+        toggleBtn.innerHTML = '&#9654;'; // Change arrow direction
+    } else {
+        toggleBtn.innerHTML = '&#9664;';
+    }
+}
+
+        // Navigate to URL
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+
+        // Delete Installment function
+        function deleteInstallment() {
+            alert('Delete Installment functionality to be implemented');
+        }
+
+        function validateForm() {
+    const name = document.getElementById('student-name').value;
+    const phone = document.getElementById('student-phone').value;
+    const email = document.getElementById('student-email').value;
+    
+    if (!name || !phone || !email) {
+        alert("All fields must be filled out");
+        return false;
+    }
+    return true;
+}
+
+document.querySelector('form').addEventListener('submit', function(event) {
+    if (!validateForm()) {
+        event.preventDefault();  // Prevent form submission if validation fails
+    }
+});
+
+    //     function markAsPaid(button) {
+    //     if (button.innerText === "Not Paid") {
+    //         // Change the text and styles
+    //         button.innerText = "Paid ✅";
+    //         button.classList.remove("btn-danger");
+    //         button.classList.add("btn-success");
+
+    //         // Disable the button to freeze its state permanently
+    //         button.disabled = true;
+    //     }
+    // }
+
+//     function markAsPaid(studentId, installmentId, installmentAmount) {
+//     // Ensure the variables are correctly passed and utilized
+//     console.log('Student ID:', studentId);
+//     console.log('Installment ID:', installmentId);
+//     console.log('Installment Amount:', installmentAmount);
+
+//     fetch('/add_payment', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//             student_id: studentId,
+//             installment_id: installmentId,
+//             installment_amount: installmentAmount
+//         })
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         if (data.message) {
+//             alert(data.message);  // Show success message
+//             // Optionally update the UI to reflect the paid status
+//         } else if (data.error) {
+//             alert(data.error);  // Show error message
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         alert('An error occurred while processing the payment');
+//     });
+// }
+
+
+// function markAsPaid(studentId, installmentId, installmentAmount) {
+//     console.log('Student ID:', studentId);
+//     console.log('Installment ID:', installmentId);
+//     console.log('Installment Amount:', installmentAmount);
+
+//     fetch('/add_payment', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//             student_id: studentId,
+//             installment_id: installmentId,
+//             installment_amount: installmentAmount
+//         })
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         if (data.message) {
+//             alert(data.message);  // Show success message
+
+//             // Optionally update the button to reflect the 'Paid' status
+//             const button = document.getElementById(`installment-${installmentId}`);
+//             button.innerText = "Paid";
+//             button.classList.remove("btn-danger");
+//             button.classList.add("btn-success");
+//             button.disabled = true;
+//         } else if (data.error) {
+//             alert(data.error);  // Show error message
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         alert('An error occurred while processing the payment');
+//     });
+// }   
+
+
+function markAsPaid(studentId, installmentId, installmentAmount, studentName, studentEmail, studentCourse) {
+    console.log('Student ID:', studentId);
+    console.log('Installment ID:', installmentId);
+    console.log('Installment Amount:', installmentAmount);
+
+    // First, make the payment
+    fetch('/add_payment', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            student_id: studentId,
+            installment_id: installmentId,
+            installment_amount: installmentAmount
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert(data.message);  // Show success message for payment
+
+            // Update the payment status button to 'Paid'
+            const button = document.getElementById(`installment-${installmentId}`);
+            button.innerText = "Paid";
+            button.classList.remove("btn-danger");
+            button.classList.add("btn-success");
+            button.disabled = true;
+
+            // Now, generate the receipt
+            generateReceipt(studentId, installmentId, installmentAmount, studentName, studentEmail, studentCourse);
+        } else if (data.error) {
+            alert(data.error);  // Show error message for payment failure
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while processing the payment');
+    });
+}
+
+// function generateReceipt(studentId, installmentId, installmentAmount, studentName, studentEmail, studentCourse) {
+//     // Ask for confirmation before generating the receipt
+//     const confirmation = confirm("Do you want to generate the fee receipt?");
+//     if (confirmation) {
+//         fetch(`/generate_receipt/${studentId}/${installmentId}`, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({
+//                 amount: installmentAmount,
+//                 name: studentName,
+//                 email: studentEmail,
+//                 course: studentCourse
+//             })
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//             if (data.success) {
+//                 // Optionally show the receipt in a modal or new section
+//                 const receipt = data.receipt;  // Assuming the server returns the receipt HTML or PDF URL
+//                 document.getElementById('receipt-container').innerHTML = receipt;  // Display in a container
+
+//                 alert("Receipt generated successfully!");
+
+//                 // If a download link is returned (e.g., PDF file), you can trigger the download:
+//                 if (data.receiptUrl) {
+//                     const link = document.createElement('a');
+//                     link.href = data.receiptUrl;
+//                     link.download = `Receipt_${studentId}_${installmentId}.pdf`;
+//                     link.click();  // Start the download
+//                 }
+//             } else {
+//                 alert("Error generating the receipt.");
+//             }
+//         });
+//     }
+// }  
+   
+function generateReceipt(studentId, installmentId, installmentAmount, studentName, studentEmail, studentCourse) {
+    // Ask for confirmation before generating the receipt
+    const confirmation = confirm("Do you want to generate the fee receipt?");
+    if (confirmation) {
+        fetch(`/generate_receipt/${studentId}/${installmentId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                amount: installmentAmount,
+                name: studentName,
+                email: studentEmail,
+                course: studentCourse
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Display the download link
+                const receiptUrl = data.receiptUrl;  // URL of the generated receipt
+                const receiptContainer = document.getElementById('receipt-container');
+                receiptContainer.innerHTML = `<a href="${receiptUrl}" target="_blank">Download Receipt</a>`;
+                alert("Receipt generated successfully!");
+            } else {
+                alert("Error generating the receipt.");
+            }
+        });
+    }
+}
+   
+    </script>
+</body>
+</html>

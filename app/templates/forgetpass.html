@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .password-reset-container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="password-reset-container">
+        
+            <!-- Flash Messages Section -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div 
+                        id="flash-message" 
+                        class="alert alert-{{ 'danger' if category == 'error' else 'success' }}"
+                        style="transition: opacity 0.5s ease-out;"
+                    >
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <h3 class="text-center mb-4">Reset Password</h3>
+        <form action="/reset-password" method="POST">
+            <div class="mb-3">
+                <label for="email" class="form-label">Registered Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
+            </div>
+            <div class="mb-3">
+                <label for="new-password" class="form-label">New Password</label>
+                <input type="password" class="form-control" id="new-password" name="new_password" placeholder="New Password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Reset Password</button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="/login" class="text-decoration-none">Back to Login</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const flashMessage = document.getElementById('flash-message');
+        if (flashMessage) {
+            // Set a timeout to remove the flash message after 3 seconds
+            setTimeout(() => {
+                flashMessage.style.opacity = '0'; // Fade out
+                setTimeout(() => {
+                    flashMessage.remove(); // Remove from DOM
+                }, 500); // Wait for the fade-out transition
+            }, 3000); // Delay of 3 seconds
+        }
+    });
+    </script>
+</body>
+</html>
